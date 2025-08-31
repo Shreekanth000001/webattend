@@ -247,7 +247,7 @@ const StudentList: React.FC<{
     attendance: AttendanceRecord[];
     setView: (view: 'students' | 'dashboard' | 'reports') => void;
     setSelectedStudent: (student: Student | null) => void;
-}> = ({ students, attendance, setView, setSelectedStudent }) => {
+}> = ({ students, attendance, setSelectedStudent }) => {
     
     const calculateAttendancePercentage = (studentId: string) => {
         const studentRecords = attendance.filter(a => a.studentId === studentId);
@@ -415,7 +415,7 @@ const Reports: React.FC = () => {
 
 const App: React.FC = () => {
     const [view, setView] = React.useState<'dashboard' | 'students' | 'reports'>('dashboard');
-    const [students, setStudents] = React.useState<Student[]>(mockStudents);
+    const [students] = React.useState<Student[]>(mockStudents);
     const [attendance, setAttendance] = React.useState<AttendanceRecord[]>(mockAttendance);
     const [selectedStudent, setSelectedStudent] = React.useState<Student | null>(null);
 
