@@ -371,8 +371,8 @@ const App: React.FC = () => {
             try {
                 // Fetch students and attendance data in parallel
                 const [studentsRes, attendanceRes] = await Promise.all([
-                    fetch('http://localhost:3000/api/students'),
-                    fetch('http://localhost:3000/api/attendance'),
+                    fetch('https://webattendbackend.onrender.com/api/students'),
+                    fetch('https://webattendbackend.onrender.com/api/attendance'),
                 ]);
 
                 if (!studentsRes.ok || !attendanceRes.ok) {
