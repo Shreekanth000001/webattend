@@ -3,27 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 // --- Type Definitions for API responses and data structures ---
 
-// Describes the structure of the user object from the API
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  classmod: "admin" | "student" | "teacher"; // Example roles
-}
-
-// Describes the successful response from the /getuser endpoint
-interface GetUserResponse {
-  user: User;
-  classid?: { // classid is optional
-    _id: string;
-  };
-}
-
-// Describes the successful response from the /login endpoint
-interface LoginSuccessResponse {
-    authToken: string;
-}
-
 // Describes a generic error response from the API
 interface ApiErrorResponse {
     message: string;

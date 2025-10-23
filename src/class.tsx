@@ -1,27 +1,34 @@
-import React, { useState } from "react";
+import { useState, type JSX } from "react";
 
 // Helper component for a Chevron Down Icon to style select dropdowns
-const ChevronDownIcon = () => (
+const ChevronDownIcon = (): JSX.Element => (
     <svg className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
     </svg>
 );
 
+// Define props interface for ClassSelectionForm
+interface ClassSelectionFormProps {
+  cnum: number;
+}
 
 // The form for selecting individual classes and the date
-const ClassSelectionForm = ({ cnum }) => {
-  const [inputs, setInputs] = useState(Array(cnum).fill(""));
-  const [dt, setDate] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState("");
+const ClassSelectionForm = ({ cnum }: ClassSelectionFormProps): JSX.Element => {
+  // Add explicit types for state variables
+  const [inputs, setInputs] = useState<string[]>(Array(cnum).fill(""));
+  const [dt, setDate] = useState<string>("");
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-  const handleChange = (index, value) => {
+  // Add types for function parameters
+  const handleChange = (index: number, value: string) => {
     const newInputs = [...inputs];
     newInputs[index] = value;
     setInputs(newInputs);
   };
 
-  const handleSubmit = async (e) => {
+  // Add type for the form event
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitted(false);
     setError("");
@@ -33,25 +40,33 @@ const ClassSelectionForm = ({ cnum }) => {
         return;
     }
     
-    const submission =await fetch("https://webattendbackend.onrender.com/api/classDay", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ classes: inputs, date: dt }),
-      });
-      if (submission.ok) {
-    console.log("Submitted Data:", { classes: inputs, date: dt });
-      }
-      else {
-        setError("Submission failed. Please try again.");
-        setTimeout(() => setError(""), 3000); 
-        return;
-      }
-    
-    // Show a success message
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000); // Clear success message after 3 seconds
+    try {
+        const submission = await fetch("https://webattendbackend.onrender.com/api/classDay", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ classes: inputs, date: dt }),
+        });
+        
+        if (submission.ok) {
+            console.log("Submitted Data:", { classes: inputs, date: dt });
+            // Show a success message
+            setIsSubmitted(true);
+            setTimeout(() => setIsSubmitted(false), 3000); // Clear success message after 3 seconds
+        } else {
+            // Handle HTTP errors
+            const errorData = await submission.json();
+            setError(errorData.message || "Submission failed. Please try again.");
+            setTimeout(() => setError(""), 3000); 
+            return;
+        }
+    } catch (err) {
+        // Handle network errors
+        console.error("Submission fetch error:", err);
+        setError("A network error occurred. Please try again.");
+        setTimeout(() => setError(""), 3000);
+    }
   };
 
   return (
@@ -65,7 +80,8 @@ const ClassSelectionForm = ({ cnum }) => {
                     <select
                         id={`classname-${i}`}
                         value={inputs[i]}
-                        onChange={(e) => handleChange(i, e.target.value)}
+                        // Add type for the change event
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange(i, e.target.value)}
                         className="appearance-none w-full px-4 py-3 bg-gray-100 border-2 border-transparent rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     >
                         <option value="" disabled>-- Select a subject --</option>
@@ -90,7 +106,8 @@ const ClassSelectionForm = ({ cnum }) => {
                 id="date-picker"
                 type="date"
                 value={dt}
-                onChange={(e) => setDate(e.target.value)}
+                // Add type for the change event
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDate(e.target.value)}
                 className="mt-1 w-full px-4 py-3 bg-gray-100 border-2 border-transparent rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
         </div>
@@ -120,18 +137,27 @@ const ClassSelectionForm = ({ cnum }) => {
 };
 
 // Main App component that renders the scheduler
-export default function App() {
-  const [selectedClassCount, setSelectedClassCount] = useState(null);
+export default function App(): JSX.Element {
+  // Add explicit type for state that can be number or null
+  const [selectedClassCount, setSelectedClassCount] = useState<number | null>(null);
 
-  function handleClassChange(event) {
+  // Add type for the change event
+  function handleClassChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const value = event.target.value;
     // Set to null if the placeholder is selected, otherwise convert to number
     setSelectedClassCount(value ? Number(value) : null);
   }
 
-    if (sessionStorage.getItem("id") != "1") {
+  // Note: This redirect logic will run on every render.
+  // It's often better to handle this in a useEffect hook or with a routing library.
+  if (sessionStorage.getItem("id") != "1") {
     console.log("No ID found in sessionStorage, redirecting to login.");
-    window.location.href = "/login";
+    // Ensure window is available (it is in a browser)
+    if (typeof window !== "undefined") {
+        window.location.href = "/login";
+    }
+    // Return null or a loading spinner while redirecting
+    return <></>; 
   }
   
   // A simple CSS animation for components fading in
@@ -190,4 +216,3 @@ export default function App() {
     </>
   );
 }
-
