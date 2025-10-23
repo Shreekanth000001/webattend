@@ -6,14 +6,14 @@ type AttendanceStatus = 'present' | 'absent' | 'leave';
 // Matches the backend structure from Supabase
 interface AttendanceRecord {
     id: number;
-    student_id: string; // Matches 'student_id' column in the database
+    student_id: number; // Matches 'student_id' column in the database
     date: string; // YYYY-MM-DD
     status: AttendanceStatus;
 }
 
 // Matches the backend structure from Supabase
 interface Student {
-    id: string;
+    id: number;
     name: string;
     // Note: avatar and class are not in the current DB schema.
     // They are added here for the UI and will use placeholder data.
@@ -80,7 +80,7 @@ const Sidebar: React.FC<{
             </nav>
             <div className="mt-auto p-4 bg-gray-50 rounded-lg text-center">
                 <p className="text-sm text-gray-600">Web Attendance System</p>
-                <p className="text-xs text-gray-400 mt-1">&copy; 2023 Shreekanth</p>
+                <p className="text-xs text-gray-400 mt-1">&copy; 2025 Critic Coder</p>
             </div>
         </aside>
     );
@@ -162,12 +162,11 @@ const Dashboard: React.FC<{
     const today = getTodayDateString();
     const presentToday = attendance.filter(a => a.date === today && a.status === 'present').length;
     const absentToday = attendance.filter(a => a.date === today && a.status === 'absent').length;
-    const leaveToday = attendance.filter(a => a.date === today && a.status === 'leave').length;
     const totalStudents = students.length;
 
     const recentRecords = attendance.filter(a => a.date === today).slice(0, 5);
 
-    const handleStudentClick = (studentId: string) => {
+    const handleStudentClick = (studentId: number) => {
         const student = students.find(s => s.id === studentId);
         if (student) {
             setSelectedStudent(student);
@@ -177,11 +176,10 @@ const Dashboard: React.FC<{
 
     return (
         <div className="p-6 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <StatCard title="Total Students" value={totalStudents} color="text-indigo-500" />
                 <StatCard title="Present Today" value={presentToday} color="text-green-500" />
                 <StatCard title="Absent Today" value={absentToday} color="text-red-500" />
-                <StatCard title="On Leave" value={leaveToday} color="text-yellow-500" />
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
@@ -218,7 +216,7 @@ const StudentList: React.FC<{
     setSelectedStudent: (student: Student | null) => void;
 }> = ({ students, attendance, setSelectedStudent }) => {
 
-    const calculateAttendancePercentage = (studentId: string) => {
+    const calculateAttendancePercentage = (studentId: number) => {
         const studentRecords = attendance.filter(a => a.student_id === studentId);
         if (studentRecords.length === 0) return 0;
         const presentCount = studentRecords.filter(a => a.status === 'present').length;
@@ -239,10 +237,19 @@ const StudentList: React.FC<{
                     </thead>
                     <tbody>
                         {students.map(student => {
-                            const todayStatus = attendance.find(a => a.student_id === student.id && a.date === getTodayDateString())?.status || 'N/A';
-                            const statusColor = todayStatus === 'present' ? 'bg-green-100 text-green-700' :
-                                todayStatus === 'absent' ? 'bg-red-100 text-red-700' :
-                                    todayStatus === 'leave' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-700';
+                            const todayStatus = attendance.find(
+  a => a.student_id === student.id && a.date === getTodayDateString()
+)?.status || 'N/A';
+
+const statusColor =
+  todayStatus === 'present'
+    ? 'bg-green-100 text-green-700'
+    : todayStatus === 'absent'
+    ? 'bg-red-100 text-red-700'
+    : todayStatus === 'leave'
+    ? 'bg-yellow-100 text-yellow-700'
+    : 'bg-gray-100 text-gray-700';
+
 
                             return (
                                 <tr key={student.id} className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer" onClick={() => setSelectedStudent(student)}>
@@ -384,6 +391,8 @@ const App: React.FC = () => {
 
                 setStudents(studentsData);
                 setAttendance(attendanceData);
+                console.log(studentsData);
+                console.log(attendanceData);
             } catch (err: any) {
                 setError(err.message);
             } finally {
