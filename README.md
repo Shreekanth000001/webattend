@@ -1,6 +1,6 @@
 # 📋 WebAttend 
 
-[![Live Demo](https://img.shields.io/badge/Live_Site-webattend.vercel.app-success?style=flat-square)](https://webattend.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live_Site-webattend-success?style=flat-square)](https://webattend.vercel.app/)
 [![React](https://img.shields.io/badge/Built_with-React-61DAFB?style=flat-square&logo=react&logoColor=black)]()
 [![TypeScript](https://img.shields.io/badge/Language-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)]()
 [![Vite](https://img.shields.io/badge/Bundler-Vite-646CFF?style=flat-square&logo=vite&logoColor=white)]()
