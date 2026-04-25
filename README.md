@@ -1,69 +1,38 @@
-# React + TypeScript + Vite
+# 📋 WebAttend 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Live Demo](https://img.shields.io/badge/Live_Site-webattend.vercel.app-success?style=flat-square)](https://webattend.vercel.app/)
+[![React](https://img.shields.io/badge/Built_with-React-61DAFB?style=flat-square&logo=react&logoColor=black)]()
+[![TypeScript](https://img.shields.io/badge/Language-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)]()
+[![Vite](https://img.shields.io/badge/Bundler-Vite-646CFF?style=flat-square&logo=vite&logoColor=white)]()
 
-Currently, two official plugins are available:
+> A streamlined, fast, and modern attendance tracking platform built to eliminate administrative overhead.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 What It Is
 
-## Expanding the ESLint configuration
+WebAttend is a frontend application designed to make tracking and managing attendance simple and intuitive. Built with performance in mind, the system uses a modern React architecture to ensure fast load times, strict type safety, and a highly responsive user interface.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+It moves away from clunky, traditional administrative software to provide a clean, immediate digital experience. 
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠 Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+This project was bootstrapped using Vite to ensure instantaneous hot-module replacement (HMR) during development and highly optimized static assets for production.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* **Core Framework:** React 
+* **Language:** TypeScript (for predictable state management and fewer runtime errors)
+* **Build Tool:** Vite 
+* **Deployment:** Vercel
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Local Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+To get this project running on your local machine, run the following commands in your terminal:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+```bash
+# 1. Clone the repository
+git clone [https://github.com/Shreekanth000001/webattend.git](https://github.com/Shreekanth000001/webattend.git)
+cd webattend
+
+# 2. Install dependencies
+npm install
+
+# 3. Start the Vite development server
+npm run dev
